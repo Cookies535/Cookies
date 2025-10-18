@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的项目 - Cookies的个人博客</title>
+    <meta name="description" content="查看Cookies的个人项目和作品">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .project-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+        .project-image {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-cookie-bite text-white text-lg"></i>
+                    </div>
+                    <span class="font-display font-bold text-xl gradient-text">Cookies</span>
+                </div>
+                
+                <div class="flex items-center space-x-6">
+                    <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-blue-500 transition-colors">
+                        <i class="fas fa-home mr-1"></i>首页
+                    </a>
+                    <a href="about.html" class="text-gray-700 dark:text-gray-300 hover:text-blue-500 transition-colors">
+                        <i class="fas fa-user mr-1"></i>关于我
+                    </a>
+                    <a href="projects.html" class="text-blue-500 font-semibold">
+                        <i class="fas fa-code mr-1"></i>我的项目
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h1 class="text-5xl font-display font-bold gradient-text mb-6">我的项目</h1>
+                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                    这里展示了我的个人项目和作品，每个项目都代表了一次技术探索和学习历程
+                </p>
+            </div>
+
+            <!-- Featured Project -->
+            <div class="mb-20">
+                <h2 class="text-3xl font-bold mb-8 text-center gradient-text">精选项目</h2>
+                <div class="glass-effect rounded-3xl p-8">
+                    <div class="grid md:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <div class="aspect-video bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6">
+                                <i class="fas fa-shopping-cart text-white text-6xl"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-bold mb-4 text-primary">现代电商购物平台</h3>
+                            <p class="text-gray-600 dark:text-gray-400 mb-6 text-lg leading-relaxed">
+                                这是一个功能完整的电商购物平台，采用现代化的技术栈开发。
+                                包含用户认证、商品管理、购物车、订单处理、支付集成等完整功能。
+                                项目采用微服务架构，支持高并发访问。
+                            </p>
+                            <div class="flex flex-wrap gap-3 mb-6">
+                                <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full">React 18</span>
+                                <span class="px-4 py-2 bg-green-100 text-green-800 rounded-full">Node.js</span>
+                                <span class="px-4 py-2 bg-purple-100 text-purple-800 rounded-full">MongoDB</span>
+                                <span class="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full">Redis</span>
+                                <span class="px-4 py-2 bg-red-100 text-red-800 rounded-full">Docker</span>
+                            </div>
+                            <div class="flex space-x-4">
+                                <a href="#" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors">
+                                    <i class="fas fa-external-link-alt mr-2"></i>在线演示
+                                </a>
+                                <a href="#" class="border border-gray-300 dark:border-gray-600 px-6 py-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                    <i class="fab fa-github mr-2"></i>查看代码
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Projects -->
+            <div>
+                <h2 class="text-3xl font-bold mb-8 text-center gradient-text">所有项目</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Project 1 -->
+                    <div class="project-card glass-effect rounded-2xl p-6">
+                        <div class="aspect-video bg-gradient-to-br from-green-500 to-blue-600 rounded-xl mb-6 overflow-hidden">
+                            <div class="project-image w-full h-full flex items-center justify-center">
+                                <i class="fas fa-tasks text-white text-4xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-primary">任务管理系统</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            现代化的任务管理应用，支持团队协作、项目跟踪、时间记录等功能。
+                            采用Vue 3 + TypeScript开发，具有优秀的用户体验。
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">Vue 3</span>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-sm">TypeScript</span>
+                            <span class="px-2 py-1 bg-red-100 text-red-800 rounded text-sm">Firebase</span>
+                        </div>
+                        <div class="flex space-x-3">
+                            <a href="#" class="text-blue-500 hover:text-blue-600 text-sm">
+                                <i class="fas fa-external-link-alt mr-1"></i>演示
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-800 text-sm">
+                                <i class="fab fa-github mr-1"></i>代码
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="project-card glass-effect rounded-2xl p-6">
+                        <div class="aspect-video bg-gradient-to-br from-pink-500 to-red-600 rounded-xl mb-6 overflow-hidden">
+                            <div class="project-image w-full h-full flex items-center justify-center">
+                                <i class="fas fa-blog text-white text-4xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-primary">个人博客系统</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            基于Astro的静态博客系统，支持Markdown写作、标签分类、全文搜索等功能。
+                            性能优秀，SEO友好。
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-orange-100 text-orange-800 rounded text-sm">Astro</span>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">Tailwind</span>
+                            <span class="px-2 py-1 bg-gray-100 text-gray-800 rounded text-sm">Markdown</span>
+                        </div>
+                        <div class="flex space-x-3">
+                            <a href="#" class="text-blue-500 hover:text-blue-600 text-sm">
+                                <i class="fas fa-external-link-alt mr-1"></i>演示
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-800 text-sm">
+                                <i class="fab fa-github mr-1"></i>代码
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="project-card glass-effect rounded-2xl p-6">
+                        <div class="aspect-video bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl mb-6 overflow-hidden">
+                            <div class="project-image w-full h-full flex items-center justify-center">
+                                <i class="fas fa-chart-line text-white text-4xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-primary">数据可视化平台</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            企业级数据可视化解决方案，支持多种图表类型、实时数据更新、
+                            自定义仪表板等功能，帮助用户更好地理解数据。
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">React</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-sm">D3.js</span>
+                            <span class="px-2 py-1 bg-purple-100 text-purple-800 rounded text-sm">ECharts</span>
+                        </div>
+                        <div class="flex space-x-3">
+                            <a href="#" class="text-blue-500 hover:text-blue-600 text-sm">
+                                <i class="fas fa-external-link-alt mr-1"></i>演示
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-800 text-sm">
+                                <i class="fab fa-github mr-1"></i>代码
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project 4 -->
+                    <div class="project-card glass-effect rounded-2xl p-6">
+                        <div class="aspect-video bg-gradient-to-br from-yellow-500 to-orange-600 rounded-xl mb-6 overflow-hidden">
+                            <div class="project-image w-full h-full flex items-center justify-center">
+                                <i class="fas fa-mobile-alt text-white text-4xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-primary">移动端应用</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            跨平台移动应用开发，使用React Native技术栈，
+                            实现一次开发多平台部署，提供原生应用体验。
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">React Native</span>
+                            <span class="px-2 py-1 bg-purple-100 text-purple-800 rounded text-sm">Expo</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-sm">Firebase</span>
+                        </div>
+                        <div class="flex space-x-3">
+                            <a href="#" class="text-blue-500 hover:text-blue-600 text-sm">
+                                <i class="fas fa-external-link-alt mr-1"></i>演示
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-800 text-sm">
+                                <i class="fab fa-github mr-1"></i>代码
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project 5 -->
+                    <div class="project-card glass-effect rounded-2xl p-6">
+                        <div class="aspect-video bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl mb-6 overflow-hidden">
+                            <div class="project-image w-full h-full flex items-center justify-center">
+                                <i class="fas fa-gamepad text-white text-4xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-primary">小游戏集合</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            使用Canvas和WebGL技术开发的小游戏集合，
+                            包含多种经典游戏类型，支持移动端和桌面端。
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">Canvas</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-sm">WebGL</span>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-sm">Pixi.js</span>
+                        </div>
+                        <div class="flex space-x-3">
+                            <a href="#" class="text-blue-500 hover:text-blue-600 text-sm">
+                                <i class="fas fa-external-link-alt mr-1"></i>演示
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-800 text-sm">
+                                <i class="fab fa-github mr-1"></i>代码
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project 6 -->
+                    <div class="project-card glass-effect rounded-2xl p-6">
+                        <div class="aspect-video bg-gradient-to-br from-gray-500 to-slate-600 rounded-xl mb-6 overflow-hidden">
+                            <div class="project-image w-full h-full flex items-center justify-center">
+                                <i class="fas fa-robot text-white text-4xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-primary">AI聊天机器人</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            基于自然语言处理技术的智能聊天机器人，
+                            支持多轮对话、意图识别、情感分析等功能。
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-sm">Python</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-sm">TensorFlow</span>
+                            <span class="px-2 py-1 bg-purple-100 text-purple-800 rounded text-sm">NLP</span>
+                        </div>
+                        <div class="flex space-x-3">
+                            <a href="#" class="text-blue-500 hover:text-blue-600 text-sm">
+                                <i class="fas fa-external-link-alt mr-1"></i>演示
+                            </a>
+                            <a href="#" class="text-gray-600 hover:text-gray-800 text-sm">
+                                <i class="fab fa-github mr-1"></i>代码
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-2 mb-6">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-cookie-bite text-white text-lg"></i>
+                    </div>
+                    <span class="font-display font-bold text-2xl gradient-text">Cookies</span>
+                </div>
+                
+                <p class="text-gray-400 mb-6">
+                    持续学习，不断创新，用代码创造美好未来
+                </p>
+                
+                <div class="border-t border-gray-800 pt-8">
+                    <p class="text-gray-400">
+                        © 2025 Cookies的个人博客. 保留所有权利.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 页面加载动画
+        document.addEventListener('DOMContentLoaded', function() {
+            anime({
+                targets: '.project-card',
+                opacity: [0, 1],
+                translateY: [50, 0],
+                delay: anime.stagger(100),
+                duration: 800,
+                easing: 'easeOutCubic'
+            });
+        });
+
+        // 项目卡片悬停效果增强
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                anime({
+                    targets: this.querySelector('.project-image'),
+                    scale: 1.1,
+                    duration: 300,
+                    easing: 'easeOutCubic'
+                });
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                anime({
+                    targets: this.querySelector('.project-image'),
+                    scale: 1,
+                    duration: 300,
+                    easing: 'easeOutCubic'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
