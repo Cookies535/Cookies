@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookies的个人博客 - 技术分享与创作</title>
+    <meta name="description" content="Cookies的个人博客，分享技术经验、生活感悟和创作心得">
+    <meta name="keywords" content="博客,技术,前端,开发,生活">
+    <meta name="author" content="Cookies">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Cookies的个人博客">
+    <meta property="og:description" content="技术分享与创作的个人空间">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://cookies535.github.io/Cookies/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#8b5cf6',
+                        accent: '#06b6d4'
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'display': ['Orbitron', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Anime.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <!-- Splide CSS for Image Gallery -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+    
+    <style>
+        /* 渐变文本效果 */
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* 玻璃拟态效果 */
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* 悬停提升效果 */
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 英雄区域背景 */
+        .hero-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.1)" points="0,0 1000,300 1000,1000 0,700"/></svg>');
+            background-size: cover;
+        }
+        
+        /* 浮动动画 */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        /* 标签页切换 */
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+        }
+        
+        .tab-button {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .tab-button::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+        
+        .tab-button.active::after {
+            width: 100%;
+        }
+        
+        /* 技能条动画 */
+        .skill-bar {
+            width: 0;
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* 图片画廊样式 */
+        .gallery-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gallery-slide {
+            position: relative;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        
+        .gallery-slide img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-slide:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: white;
+            padding: 2rem 1.5rem 1.5rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-slide:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+        
+        /* 音乐控制器样式 */
+        .music-controller {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex !important;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        /* 图片模态框 */
+        #imageModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #imageModal.show {
+            display: flex;
+        }
+        
+        #imageModal img {
+            width: auto;
+            height: auto;
+            max-width: 90%;
+            max-height: 80vh;
+            object-fit: contain;
+            transition: opacity 0.3s ease;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            #imageModal img {
+                max-height: 60vh;
+            }
+            
+            #imageModal .flex {
+                padding: 1rem;
+            }
+        }
+        
+        /* 音频播放器样式 */
+        .audio-player {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        
+        /* 暗色模式支持 */
+        .dark-mode .glass-effect {
+            background: rgba(15, 23, 42, 0.8);
+        }
+        
+        /* 加载动画 */
+        .loading-spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 图片加载状态 */
+        .image-loading {
+            position: relative;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .image-loaded {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        
+        /* 性能优化相关样式 */
+        .lazy-image {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .lazy-image.loaded {
+            opacity: 1;
+        }
+        
+        .image-error {
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+        }
+        
+        /* 模态框下载按钮样式 */
+        #imageModal a[download] {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: #3b82f6;
+            color: white;
+            padding: 0.75rem;
+            border-radius: 9999px;
+            transition: background-color 0.3s;
+            z-index: 11;
+        }
+        
+        #imageModal a[download]:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-effect border-b border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-cookie-bite text-white text-lg"></i>
+                    </div>
+                    <span class="font-display font-bold text-xl gradient-text">Cookies</span>
+                </div>
+                
+                <!-- 桌面端导航 -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <button class="nav-link tab-button active" data-tab="home">首页</button>
+                    <button class="nav-link tab-button" data-tab="about">关于</button>
+                    <button class="nav-link tab-button" data-tab="skills">技能</button>
+                    <button class="nav-link tab-button" data-tab="gallery">相册</button>
+                    <button class="nav-link tab-button" data-tab="projects">项目</button>
+                    <button class="nav-link tab-button" data-tab="timeline">历程</button>
+                    <button class="nav-link tab-button" data-tab="contact">联系</button>
+                </div>
+                
+                <!-- 移动端菜单按钮 -->
+                <div class="md:hidden">
+                    <button id="mobileMenuButton" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 移动端菜单 -->
+        <div id="mobileMenu" class="md:hidden hidden glass-effect border-t border-gray-200 dark:border-gray-700">
+            <div class="px-4 py-2 space-y-2">
+                <button class="nav-link tab-button active w-full text-left py-2" data-tab="home">首页</button>
+                <button class="nav-link tab-button w-full text-left py-2" data-tab="about">关于</button>
+                <button class="nav-link tab-button w-full text-left py-2" data-tab="skills">技能</button>
+                <button class="nav-link tab-button w-full text-left py-2" data-tab="gallery">相册</button>
+                <button class="nav-link tab-button w-full text-left py-2" data-tab="projects">项目</button>
+                <button class="nav-link tab-button w-full text-left py-2" data-tab="timeline">历程</button>
+                <button class="nav-link tab-button w-full text-left py-2" data-tab="contact">联系</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 首页部分 -->
+    <section id="home" class="tab-content active hero-bg min-h-screen flex items-center justify-center pt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div class="floating">
+                <div class="w-32 h-32 mx-auto mb-8 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center shadow-2xl">
+                    <i class="fas fa-cookie-bite text-white text-6xl"></i>
+                </div>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-display font-bold mb-6 gradient-text">
+                Hello, I'm Cookies
+            </h1>
+            <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto">
+                一个热爱技术、分享经验的开发者<br>
+                在这里记录我的编程之路和生活感悟
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button class="tab-button bg-primary hover:bg-blue-600 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105" data-tab="about">
+                    了解更多 <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button class="tab-button glass-effect text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105" data-tab="projects">
+                    我的项目 <i class="fas fa-code ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我部分 -->
+    <section id="about" class="tab-content py-20 bg-white dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-display font-bold gradient-text mb-6">关于我</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400">
+                    一个对技术充满热情的开发者
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="glass-effect rounded-2xl p-8">
+                        <h3 class="text-2xl font-bold mb-4 text-primary">你好！我是 Cookies</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            我是一名热爱编程的开发者，专注于前端开发和用户体验设计。
+                            我相信技术可以改变世界，而我想成为这个改变的一份子。
+                        </p>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            在这个博客中，我会分享我的技术经验、学习心得，
+                            以及生活中的点点滴滴。希望我的分享能够对你有所帮助。
+                        </p>
+                        <div class="flex flex-wrap gap-3 mt-6">
+                            <span class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium">前端开发</span>
+                            <span class="px-4 py-2 bg-secondary/10 text-secondary rounded-full text-sm font-medium">用户体验</span>
+                            <span class="px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-medium">技术分享</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="glass-effect rounded-2xl p-8">
+                        <h3 class="text-2xl font-bold mb-6 text-primary">我的兴趣</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-code text-primary text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">编程开发</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">享受代码带来的创造乐趣</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-palette text-secondary text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">设计美学</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">追求完美的视觉体验</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-camera text-accent text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">摄影记录</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">用镜头捕捉生活美好</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-book text-green-500 text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">阅读学习</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">持续学习，不断进步</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技能部分 -->
+    <section id="skills" class="tab-content py-20 bg-gray-100 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-display font-bold gradient-text mb-6">我的技能</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400">
+                    不断学习，持续提升的技术栈
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 前端技能 -->
+                <div class="glass-effect rounded-2xl p-8 hover-lift">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-laptop-code text-primary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-primary">前端开发</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium">HTML/CSS</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">95%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-primary h-2 rounded-full" data-width="95"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium">JavaScript</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">90%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-primary h-2 rounded-full" data-width="90"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium">React/Vue</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">85%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-primary h-2 rounded-full" data-width="85"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 设计技能 -->
+                <div class="glass-effect rounded-2xl p-8 hover-lift">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-secondary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-paint-brush text-secondary text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-secondary">设计能力</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium">UI/UX设计</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">80%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-secondary h-2 rounded-full" data-width="80"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium">Figma</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">85%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-secondary h-2 rounded-full" data-width="85"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium">Photoshop</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">75%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-secondary h-2 rounded-full" data-width="75"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 后端技能 -->
+                <div class="glass-effect rounded-2xl p-8 hover-lift">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-server text-accent text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-accent">后端技术</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium">Node.js</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">70%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-accent h-2 rounded-full" data-width="70"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium">Python</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">65%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-accent h-2 rounded-full" data-width="65"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium">数据库</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">75%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="skill-bar bg-accent h-2 rounded-full" data-width="75"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 图片画廊部分 -->
+    <section id="gallery" class="tab-content py-20 bg-white dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-display font-bold gradient-text mb-6">我的相册</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400">
+                    记录生活的美好瞬间，分享创作的精彩过程
+                </p>
+            </div>
+            
+            <!-- 音频播放器 -->
+            <div class="audio-player rounded-2xl p-4 mb-8">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <button id="playPauseBtn" class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-colors">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <div>
+                            <h4 class="font-semibold">背景音乐</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">轻音乐 - 放松身心</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-volume-up text-gray-600 dark:text-gray-400"></i>
+                        <input type="range" id="volumeSlider" min="0" max="100" value="50" class="w-24">
+                    </div>
+                </div>
+                <audio id="bgMusic" loop>
+                    <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+                </audio>
+            </div>
+            
+            <!-- 图片分类筛选 -->
+            <div class="flex justify-center mb-8">
+                <div class="flex flex-wrap gap-4">
+                    <button class="gallery-filter active px-6 py-2 rounded-full bg-primary text-white" data-filter="all">全部</button>
+                    <button class="gallery-filter px-6 py-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300" data-filter="life">生活</button>
+                    <button class="gallery-filter px-6 py-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300" data-filter="work">工作</button>
+                    <button class="gallery-filter px-6 py-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300" data-filter="travel">旅行</button>
+                    <button class="gallery-filter px-6 py-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300" data-filter="food">美食</button>
+                </div>
+            </div>
+            
+            <!-- 优化后的图片网格 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="galleryGrid">
+                <!-- 生活类图片 -->
+                <div class="gallery-item" data-category="life">
+                    <div class="glass-effect rounded-2xl overflow-hidden hover-lift cursor-pointer" onclick="openModal(this)">
+                        <div class="aspect-square relative overflow-hidden">
+                            <img data-src="https://images.unsplash.com/photo-1763858994444-e974d415cf54?w=400&h=400&fit=crop&q=80" 
+                                 data-hd-src="https://images.unsplash.com/photo-1763858994444-e974d415cf54?w=1920&h=1080&fit=max&q=100"
+                                 data-download-url="https://unsplash.com/photos/EEHxjtVelwE/download?ixid=M3wxMjA3fDB8MXxhbGx8MXx8fHx8fHx8MTc2Mzg1OTA3N3w&force=true"
+                                 alt="温馨家居" 
+                                 class="lazy-image w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                                 loading="lazy">
+                            <div class="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity">
+                                <i class="fas fa-expand text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">温馨家居</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">记录生活中的美好时光</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="life">
+                    <div class="glass-effect rounded-2xl overflow-hidden hover-lift cursor-pointer" onclick="openModal(this)">
+                        <div class="aspect-square relative overflow-hidden">
+                            <img data-src="https://images.unsplash.com/photo-1763859011513-e31f85d7559b?w=400&h=400&fit=crop&q=80" 
+                                 data-hd-src="https://images.unsplash.com/photo-1763859011513-e31f85d7559b?w=1920&h=1080&fit=max&q=100"
+                                 data-download-url="https://unsplash.com/photos/mjiuR2GQ0Lc/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzYzODg5NDYwfA&force=true"
+                                 alt="宠物时光" 
+                                 class="lazy-image w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                                 loading="lazy">
+                            <div class="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity">
+                                <i class="fas fa-expand text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">宠物时光</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">与毛孩子的快乐时光</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 工作类图片 -->
+                <div class="gallery-item" data-category="work">
+                    <div class="glass-effect rounded-2xl overflow-hidden hover-lift cursor-pointer" onclick="openModal(this)">
+                        <div class="aspect-square relative overflow-hidden">
+                            <img data-src="https://images.unsplash.com/photo-1763858994616-386d790876d5?w=400&h=400&fit=crop&q=80" 
+                                 data-hd-src="https://images.unsplash.com/photo-1763858994616-386d790876d5?w=1920&h=1080&fit=max&q=100"
+                                 data-download-url="https://unsplash.com/photos/2o5IU-cZYUY/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzYzOTA1NDI3fA&force=true"
+                                 alt="编程时刻" 
+                                 class="lazy-image w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                                 loading="lazy">
+                            <div class="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity">
+                                <i class="fas fa-expand text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">编程时刻</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">专注编码的工作状态</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="work">
+                    <div class="glass-effect rounded-2xl overflow-hidden hover-lift cursor-pointer" onclick="openModal(this)">
+                        <div class="aspect-square relative overflow-hidden">
+                            <img data-src="https://images.unsplash.com/photo-1763858994412-428296496481?w=400&h=400&fit=crop&q=80" 
+                                 data-hd-src="https://images.unsplash.com/photo-1763858994412-428296496481?w=1920&h=1080&fit=max&q=100"
+                                 data-download-url="https://unsplash.com/photos/fhHXTCqbtPI/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzYzOTA1NDY4fA&force=true"
+                                 alt="团队协作" 
+                                 class="lazy-image w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                                 loading="lazy">
+                            <div class="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity">
+                                <i class="fas fa-expand text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">团队协作</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">与团队一起攻克难题</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 旅行类图片 -->
+                <div class="gallery-item" data-category="travel">
+                    <div class="glass-effect rounded-2xl overflow-hidden hover-lift cursor-pointer" onclick="openModal(this)">
+                        <div class="aspect-square relative overflow-hidden">
+                            <img data-src="https://images.unsplash.com/photo-1763859023236-d05db545b3a5?w=400&h=400&fit=crop&q=80" 
+                                 data-hd-src="https://images.unsplash.com/photo-1763859023236-d05db545b3a5?w=1920&h=1080&fit=max&q=100"
+                                 data-download-url="https://unsplash.com/photos/ccHRecX_FYw/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzYzOTA1NDk0fA&force=true"
+                                 alt="山川湖海" 
+                                 class="lazy-image w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                                 loading="lazy">
+                            <div class="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity">
+                                <i class="fas fa-expand text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">山川湖海</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">探索世界的美丽风景</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="travel">
+                    <div class="glass-effect rounded-2xl overflow-hidden hover-lift cursor-pointer" onclick="openModal(this)">
+                        <div class="aspect-square relative overflow-hidden">
+                            <img data-src="https://images.unsplash.com/photo-1763858994584-879fd01ab229?w=400&h=400&fit=crop&q=80" 
+                                 data-hd-src="https://images.unsplash.com/photo-1763858994584-879fd01ab229?w=1920&h=1080&fit=max&q=100"
+                                 data-download-url="https://unsplash.com/photos/TGoBunr4zNE/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzYzOTA1NTE1fA&force=true"
+                                 alt="城市漫步" 
+                                 class="lazy-image w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                                 loading="lazy">
+                            <div class="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity">
+                                <i class="fas fa-expand text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">城市漫步</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">感受不同城市的魅力</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 美食类图片 -->
+                <div class="gallery-item" data-category="food">
+                    <div class="glass-effect rounded-2xl overflow-hidden hover-lift cursor-pointer" onclick="openModal(this)">
+                        <div class="aspect-square relative overflow-hidden">
+                            <img data-src="https://images.unsplash.com/photo-1763859011602-64c8284f2156?w=400&h=400&fit=crop&q=80" 
+                                 data-hd-src="https://images.unsplash.com/photo-1763859011602-64c8284f2156?w=1920&h=1080&fit=max&q=100"
+                                 data-download-url="https://unsplash.com/photos/Jkdu4m1Pba4/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzYzOTA1NTMwfA&force=true"
+                                 alt="精致料理" 
+                                 class="lazy-image w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                                 loading="lazy">
+                            <div class="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity">
+                                <i class="fas fa-expand text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">精致料理</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">品尝生活中的美味</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="food">
+                    <div class="glass-effect rounded-2xl overflow-hidden hover-lift cursor-pointer" onclick="openModal(this)">
+                        <div class="aspect-square relative overflow-hidden">
+                            <img data-src="https://images.unsplash.com/photo-1763858995674-d10f5e00aa47?w=400&h=400&fit=crop&q=80" 
+                                 data-hd-src="https://images.unsplash.com/photo-1763858995674-d10f5e00aa47?w=1920&h=1080&fit=max&q=100"
+                                 data-download-url="https://unsplash.com/photos/hSpdIhVSoSc/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzYzOTA1NTQ3fA&force=true"
+                                 alt="咖啡时光" 
+                                 class="lazy-image w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                                 loading="lazy">
+                            <div class="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity">
+                                <i class="fas fa-expand text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">咖啡时光</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">享受悠闲的下午茶</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== 新增CDN图片示例 ==================== -->
+                <!-- 请按照以下格式添加您的图片，替换三个data-链接中的值 -->
+                
+                <!-- 新增生活类图片示例 -->
+                <div class="gallery-item" data-category="life">
+                    <div class="glass-effect rounded-2xl overflow-hidden hover-lift cursor-pointer" onclick="openModal(this)">
+                        <div class="aspect-square relative overflow-hidden">
+                            <!-- 缩略图（快速加载） -->
+                            <img data-src="https://images.unsplash.com/photo-1763858994559-0b947c88a9b4?w=400&h=400&fit=crop&q=80" 
+                                 data-hd-src="https://images.unsplash.com/photo-1763858994559-0b947c88a9b4?w=1920&h=1080&fit=max&q=100"
+                                 data-download-url="https://unsplash.com/photos/vfRT-khQQXE/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzYzOTA1NTY5fA&force=true"
+                                 alt="您的生活图片描述" 
+                                 class="lazy-image w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                                 loading="lazy">
+                            <div class="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity">
+                                <i class="fas fa-expand text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">您的生活图片标题</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">您的生活图片详细描述</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 新增工作类图片示例 -->
+                <div class="gallery-item" data-category="work">
+                    <div class="glass-effect rounded-2xl overflow-hidden hover-lift cursor-pointer" onclick="openModal(this)">
+                        <div class="aspect-square relative overflow-hidden">
+                            <img data-src="https://images.unsplash.com/photo1763858994405-1c6fd1d8b817?w=400&h=400&fit=crop&q=80" 
+                                 data-hd-src="https://images.unsplash.com/photo-1763858994405-1c6fd1d8b817?w=1920&h=1080&fit=max&q=100"
+                                 data-download-url="https://unsplash.com/photos/HmvUx38u2b4/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzYzOTA1NTkwfA&force=true"
+                                 alt="您的工作图片描述" 
+                                 class="lazy-image w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                                 loading="lazy">
+                            <div class="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity">
+                                <i class="fas fa-expand text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">您的工作图片标题</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">您的工作图片详细描述</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 新增旅行类图片示例 -->
+                <div class="gallery-item" data-category="travel">
+                    <div class="glass-effect rounded-2xl overflow-hidden hover-lift cursor-pointer" onclick="openModal(this)">
+                        <div class="aspect-square relative overflow-hidden">
+                            <img data-src="https://i.ibb.co/HfXdcw0X/picture12.jpg" 
+                                 data-hd-src="https://i.ibb.co/HfXdcw0X/picture12.jpg"
+                                 data-download-url="https://i.ibb.co/HfXdcw0X/picture12.jpg"
+                                 alt="您的旅行图片描述" 
+                                 class="lazy-image w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                                 loading="lazy">
+                            <div class="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity">
+                                <i class="fas fa-expand text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">您的旅行图片标题</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">您的旅行图片详细描述</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 新增美食类图片示例 -->
+                <div class="gallery-item" data-category="food">
+                    <div class="glass-effect rounded-2xl overflow-hidden hover-lift cursor-pointer" onclick="openModal(this)">
+                        <div class="aspect-square relative overflow-hidden">
+                            <img data-src="https://images.unsplash.com/photo-YOUR_FOOD_ID?w=400&h=400&fit=crop&q=80" 
+                                 data-hd-src="https://images.unsplash.com/photo-YOUR_FOOD_ID?w=1920&h=1080&fit=max&q=100"
+                                 data-download-url="https://unsplash.com/photos/YOUR_FOOD_ID/download"
+                                 alt="您的美食图片描述" 
+                                 class="lazy-image w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                                 loading="lazy">
+                            <div class="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity">
+                                <i class="fas fa-expand text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-2">您的美食图片标题</h3>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">您的美食图片详细描述</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- ==================== 新增图片结束 ==================== -->
+            </div>
+            
+            <!-- 加载更多按钮 -->
+            <div class="text-center mt-12">
+                <button id="loadMoreBtn" class="bg-primary hover:bg-blue-600 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105">
+                    加载更多 <i class="fas fa-plus ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 项目部分 -->
+    <section id="projects" class="tab-content py-20 bg-gray-100 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-display font-bold gradient-text mb-6">我的项目</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400">
+                    探索我的技术作品和创意实现
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 项目1 -->
+                <div class="glass-effect rounded-2xl overflow-hidden hover-lift">
+                    <div class="relative h-48 bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                        <i class="fas fa-shopping-cart text-white text-6xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3">电商网站</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            基于React和Node.js开发的全栈电商解决方案，
+                            包含用户管理、商品展示、购物车等完整功能。
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">React</span>
+                            <span class="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm">Node.js</span>
+                            <span class="px-3 py-1 bg-accent/10 text-accent rounded-full text-sm">MongoDB</span>
+                        </div>
+                        <div class="flex space-x-4">
+                            <button class="flex-1 bg-primary hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition-colors">
+                                <i class="fas fa-external-link-alt mr-2"></i>演示
+                            </button>
+                            <button class="flex-1 glass-effect hover:bg-gray-200 dark:hover:bg-gray-700 py-2 px-4 rounded-lg transition-colors">
+                                <i class="fab fa-github mr-2"></i>代码
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 项目2 -->
+                <div class="glass-effect rounded-2xl overflow-hidden hover-lift">
+                    <div class="relative h-48 bg-gradient-to-r from-secondary to-accent flex items-center justify-center">
+                        <i class="fas fa-tasks text-white text-6xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3">任务管理系统</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            企业级任务管理平台，支持团队协作、
+                            进度跟踪、文件共享等功能。
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Vue.js</span>
+                            <span class="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm">Express</span>
+                            <span class="px-3 py-1 bg-accent/10 text-accent rounded-full text-sm">MySQL</span>
+                        </div>
+                        <div class="flex space-x-4">
+                            <button class="flex-1 bg-primary hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition-colors">
+                                <i class="fas fa-external-link-alt mr-2"></i>演示
+                            </button>
+                            <button class="flex-1 glass-effect hover:bg-gray-200 dark:hover:bg-gray-700 py-2 px-4 rounded-lg transition-colors">
+                                <i class="fab fa-github mr-2"></i>代码
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 项目3 -->
+                <div class="glass-effect rounded-2xl overflow-hidden hover-lift">
+                    <div class="relative h-48 bg-gradient-to-r from-accent to-green-500 flex items-center justify-center">
+                        <i class="fas fa-blog text-white text-6xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3">个人博客系统</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">
+                            现代化的个人博客平台，支持Markdown编辑、
+                            标签分类、评论互动等功能。
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Next.js</span>
+                            <span class="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm">Tailwind</span>
+                            <span class="px-3 py-1 bg-accent/10 text-accent rounded-full text-sm">Prisma</span>
+                        </div>
+                        <div class="flex space-x-4">
+                            <button class="flex-1 bg-primary hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition-colors">
+                                <i class="fas fa-external-link-alt mr-2"></i>演示
+                            </button>
+                            <button class="flex-1 glass-effect hover:bg-gray-200 dark:hover:bg-gray-700 py-2 px-4 rounded-lg transition-colors">
+                                <i class="fab fa-github mr-2"></i>代码
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 时间线部分 -->
+    <section id="timeline" class="tab-content py-20 bg-white dark:bg-gray-800">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-display font-bold gradient-text mb-6">成长历程</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400">
+                    记录我的技术成长之路
+                </p>
+            </div>
+            
+            <div class="relative">
+                <!-- 时间线轴线 -->
+                <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-primary"></div>
+                
+                <!-- 时间节点1 -->
+                <div class="relative flex items-start mb-12">
+                    <div class="absolute left-6 w-4 h-4 bg-primary rounded-full border-4 border-white dark:border-gray-800"></div>
+                    <div class="ml-16 glass-effect rounded-2xl p-6 hover-lift">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">2021</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">初入编程</h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            开始接触前端开发，学习HTML、CSS和JavaScript基础知识，
+                            完成了第一个个人网站项目。
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 时间节点2 -->
+                <div class="relative flex items-start mb-12">
+                    <div class="absolute left-6 w-4 h-4 bg-secondary rounded-full border-4 border-white dark:border-gray-800"></div>
+                    <div class="ml-16 glass-effect rounded-2xl p-6 hover-lift">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-sm font-medium">2022</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">框架学习</h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            深入学习React和Vue框架，掌握了组件化开发思想，
+                            开始参与开源项目贡献。
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 时间节点3 -->
+                <div class="relative flex items-start mb-12">
+                    <div class="absolute left-6 w-4 h-4 bg-accent rounded-full border-4 border-white dark:border-gray-800"></div>
+                    <div class="ml-16 glass-effect rounded-2xl p-6 hover-lift">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-accent/10 text-accent px-3 py-1 rounded-full text-sm font-medium">2023</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">全栈发展</h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            扩展到后端开发，学习Node.js和Python，
+                            完成了多个全栈项目，提升了系统设计能力。
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 时间节点4 -->
+                <div class="relative flex items-start">
+                    <div class="absolute left-6 w-4 h-4 bg-green-500 rounded-full border-4 border-white dark:border-gray-800"></div>
+                    <div class="ml-16 glass-effect rounded-2xl p-6 hover-lift">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-green-500/10 text-green-500 px-3 py-1 rounded-full text-sm font-medium">2024</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">持续成长</h3>
+                        <p class="text-gray-600 dark:text-gray-400">
+                            专注于技术深度和广度的提升，开始技术分享和写作，
+                            帮助更多人学习和成长。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系部分 -->
+    <section id="contact" class="tab-content py-20 bg-gray-100 dark:bg-gray-900">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-display font-bold gradient-text mb-6">联系我</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400">
+                    让我们一起交流技术，分享经验
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- 联系信息 -->
+                <div class="space-y-8">
+                    <div class="glass-effect rounded-2xl p-8">
+                        <h3 class="text-2xl font-bold mb-6 text-primary">联系方式</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-envelope text-primary text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">邮箱</h4>
+                                    <p class="text-gray-600 dark:text-gray-400">cookies@example.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center">
+                                    <i class="fab fa-github text-secondary text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">GitHub</h4>
+                                    <p class="text-gray-600 dark:text-gray-400">github.com/cookies535</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
+                                    <i class="fab fa-twitter text-accent text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold">Twitter</h4>
+                                    <p class="text-gray-600 dark:text-gray-400">@cookies_dev</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-effect rounded-2xl p-8">
+                        <h3 class="text-2xl font-bold mb-6 text-primary">快速链接</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button class="flex items-center space-x-3 p-4 rounded-lg glass-effect hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fab fa-github text-2xl"></i>
+                                <span class="font-medium">GitHub</span>
+                            </button>
+                            <button class="flex items-center space-x-3 p-4 rounded-lg glass-effect hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fab fa-linkedin text-2xl"></i>
+                                <span class="font-medium">LinkedIn</span>
+                            </button>
+                            <button class="flex items-center space-x-3 p-4 rounded-lg glass-effect hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fab fa-twitter text-2xl"></i>
+                                <span class="font-medium">Twitter</span>
+                            </button>
+                            <button class="flex items-center space-x-3 p-4 rounded-lg glass-effect hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-envelope text-2xl"></i>
+                                <span class="font-medium">邮箱</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 联系表单 -->
+                <div class="glass-effect rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold mb-6 text-primary">发送消息</h3>
+                    <form class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">姓名</label>
+                            <input type="text" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入您的姓名">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">邮箱</label>
+                            <input type="email" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入您的邮箱">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">主题</label>
+                            <input type="text" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入消息主题">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">消息内容</label>
+                            <textarea rows="5" class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入您的消息内容"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-primary hover:bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold transition-colors">
+                            <i class="fas fa-paper-plane mr-2"></i>发送消息
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 图片模态框 -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center hidden">
+        <div class="relative max-w-4xl max-h-full p-4">
+            <button id="closeModal" class="absolute top-4 right-4 text-white text-3xl hover:text-gray-300 z-10">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="modalImage" src="" alt="" class="max-w-full max-h-full object-contain">
+            <div class="absolute bottom-4 left-4 right-4 text-white text-center">
+                <h3 id="modalTitle" class="text-xl font-bold mb-2"></h3>
+                <p id="modalDescription" class="text-gray-300"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 音乐控制器 -->
+    <div class="music-controller fixed bottom-6 right-6 rounded-full p-4 text-white">
+        <button id="musicToggle" class="text-2xl hover:scale-110 transition-transform">
+            <i class="fas fa-music"></i>
+        </button>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <button id="backToTop" class="fixed bottom-6 left-6 bg-primary hover:bg-blue-600 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 opacity-0 pointer-events-none">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script>
+// =============================================================================
+// Cookies 个人博客 - 优化版 JavaScript 功能
+// =============================================================================
+
+// =============================================================================
+// 全局变量和配置
+// =============================================================================
+let currentTab = 'home';
+let isMusicPlaying = false;
+let skillBarsAnimated = false;
+let imageLoadAttempts = {};
+let lazyImageObserver;
+
+// CDN配置
+const CDN_CONFIG = {
+    primary: 'https://images.unsplash.com',
+    fallback: 'https://picsum.photos',
+    timeout: 5000
+};
+
+// =============================================================================
+// 初始化函数
+// =============================================================================
+document.addEventListener('DOMContentLoaded', function() {
+    initTabSystem();
+    initGalleryFilter();
+    initMusicPlayer();
+    initDarkMode();
+    initMobileMenu();
+    initScrollEffects();
+    initLazyLoading();
+    initImageModal();
+    initContactForm();
+    initBackToTop();
+    initPerformanceMonitoring();
+    
+    // 预加载关键资源
+    preloadCriticalResources();
+});
+
+// =============================================================================
+// 标签页切换系统
+// =============================================================================
+
+function initTabSystem() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
+            switchTab(targetTab);
+        });
+    });
+}
+
+function switchTab(tabName) {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    // 移除所有活动状态
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+    tabContents.forEach(content => content.classList.remove('active'));
+    
+    // 激活目标标签页
+    const targetButton = document.querySelector(`[data-tab="${tabName}"]`);
+    const targetContent = document.getElementById(tabName);
+    
+    if (targetButton && targetContent) {
+        targetButton.classList.add('active');
+        targetContent.classList.add('active');
+        currentTab = tabName;
+        
+        // 如果是技能页面，触发技能条动画
+        if (tabName === 'skills' && !skillBarsAnimated) {
+            setTimeout(() => {
+                animateSkillBars();
+                skillBarsAnimated = true;
+            }, 500);
+        }
+        
+        // 如果是相册页面，初始化懒加载
+        if (tabName === 'gallery') {
+            setTimeout(() => {
+                initializeLazyImages();
+            }, 300);
+        }
+        
+        // 滚动到顶部
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // 关闭移动端菜单
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenu) {
+            mobileMenu.classList.add('hidden');
+        }
+    }
+}
+
+// =============================================================================
+// 图片画廊功能
+// =============================================================================
+
+function initGalleryFilter() {
+    const filterButtons = document.querySelectorAll('.gallery-filter');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            
+            // 更新按钮状态
+            filterButtons.forEach(btn => {
+                btn.classList.remove('active', 'bg-primary', 'text-white');
+                btn.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            });
+            
+            this.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            this.classList.add('active', 'bg-primary', 'text-white');
+            
+            // 筛选图片
+            filterGallery(filter);
+        });
+    });
+}
+
+function filterGallery(filter) {
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    
+    galleryItems.forEach((item, index) => {
+        const category = item.getAttribute('data-category');
+        
+        if (filter === 'all' || category === filter) {
+            item.style.display = 'block';
+            // 添加淡入动画
+            anime({
+                targets: item,
+                opacity: [0, 1],
+                translateY: [20, 0],
+                delay: index * 100,
+                duration: 500,
+                easing: 'easeOutQuart'
+            });
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+function initLazyLoading() {
+    if ('IntersectionObserver' in window) {
+        lazyImageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    loadLazyImage(img);
+                    observer.unobserve(img);
+                }
+            });
+        }, {
+            rootMargin: '50px 0px',
+            threshold: 0.01
+        });
+    }
+}
+
+function initializeLazyImages() {
+    const lazyImages = document.querySelectorAll('.lazy-image');
+    
+    lazyImages.forEach(img => {
+        if (lazyImageObserver) {
+            lazyImageObserver.observe(img);
+        } else {
+            loadLazyImage(img);
+        }
+    });
+}
+
+function loadLazyImage(img) {
+    const src = img.getAttribute('data-src');
+    if (!src) return;
+    
+    // 创建图片加载指示器
+    const loadingIndicator = createLoadingIndicator();
+    img.parentNode.appendChild(loadingIndicator);
+    
+    // 尝试加载图片
+    loadImageWithFallback(src, img)
+        .then(() => {
+            img.classList.add('loaded');
+            loadingIndicator.remove();
+        })
+        .catch(() => {
+            loadingIndicator.remove();
+            handleImageError(img);
+        });
+}
+
+function loadImageWithFallback(src, img) {
+    return new Promise((resolve, reject) => {
+        const image = new Image();
+        let timeout;
+        
+        timeout = setTimeout(() => {
+            image.src = '';
+            reject(new Error('Image load timeout'));
+        }, CDN_CONFIG.timeout);
+        
+        image.onload = () => {
+            clearTimeout(timeout);
+            img.src = src;
+            resolve();
+        };
+        
+        image.onerror = () => {
+            clearTimeout(timeout);
+            
+            if (src.includes(CDN_CONFIG.primary)) {
+                const fallbackSrc = src.replace(CDN_CONFIG.primary, CDN_CONFIG.fallback);
+                loadImageWithFallback(fallbackSrc, img)
+                    .then(resolve)
+                    .catch(reject);
+            } else {
+                reject(new Error('Image load failed'));
+            }
+        };
+        
+        image.src = src;
+    });
+}
+
+function handleImageError(img) {
+    img.classList.add('image-error');
+    img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzZiNzI4MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPuWbvueJh+aaguaXtuWKoOi9vTwvdGV4dD48L3N2Zz4=';
+    
+    img.style.cursor = 'pointer';
+    img.addEventListener('click', () => {
+        const originalSrc = img.getAttribute('data-src');
+        if (originalSrc) {
+            img.classList.remove('image-error');
+            loadImageWithFallback(originalSrc, img);
+        }
+    });
+}
+
+function createLoadingIndicator() {
+    const indicator = document.createElement('div');
+    indicator.className = 'absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800';
+    indicator.innerHTML = '<div class="loading-spinner"></div>';
+    return indicator;
+}
+
+// =============================================================================
+// 图片模态框功能
+// =============================================================================
+
+function initImageModal() {
+    const modal = document.getElementById('imageModal');
+    const closeBtn = document.getElementById('closeModal');
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeModal);
+    }
+    
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    }
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+            closeModal();
+        }
+    });
+}
+
+function openModal(element) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDescription = document.getElementById('modalDescription');
+    
+    const img = element.querySelector('img');
+    const title = element.querySelector('h3');
+    const description = element.querySelector('p');
+    
+    const hdSrc = img.getAttribute('data-hd-src') || img.getAttribute('data-src');
+    const downloadUrl = img.getAttribute('data-download-url');
+    
+    if (modal && modalImage) {
+        modalImage.style.opacity = '0';
+        
+        const hdImage = new Image();
+        hdImage.onload = () => {
+            modalImage.src = hdSrc;
+            modalImage.style.opacity = '1';
+        };
+        hdImage.onerror = () => {
+            modalImage.src = img.getAttribute('data-src');
+            modalImage.style.opacity = '1';
+        };
+        hdImage.src = hdSrc;
+        
+        modalImage.alt = img.alt;
+        
+        if (modalTitle && title) {
+            modalTitle.textContent = title.textContent;
+        }
+        
+        if (modalDescription && description) {
+            modalDescription.textContent = description.textContent;
+        }
+        
+        if (downloadUrl) {
+            const downloadBtn = document.createElement('a');
+            downloadBtn.href = downloadUrl;
+            downloadBtn.download = '';
+            downloadBtn.className = 'absolute top-4 left-4 bg-primary text-white p-3 rounded-full hover:bg-blue-600 transition-colors';
+            downloadBtn.innerHTML = '<i class="fas fa-download"></i>';
+            downloadBtn.target = '_blank';
+            
+            const existingBtn = modal.querySelector('a[download]');
+            if (existingBtn) existingBtn.remove();
+            
+            modal.querySelector('.relative').appendChild(downloadBtn);
+        }
+        
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeModal() {
+    const modal = document.getElementById('imageModal');
+    if (modal) {
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+}
+
+// =============================================================================
+// 背景音乐控制
+// =============================================================================
+
+function initMusicPlayer() {
+    const musicToggle = document.getElementById('musicToggle');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const bgMusic = document.getElementById('bgMusic');
+    const volumeSlider = document.getElementById('volumeSlider');
+    
+    if (musicToggle) {
+        musicToggle.addEventListener('click', toggleMusic);
+    }
+    
+    if (playPauseBtn) {
+        playPauseBtn.addEventListener('click', toggleMusic);
+    }
+    
+    if (volumeSlider && bgMusic) {
+        volumeSlider.addEventListener('input', (e) => {
+            bgMusic.volume = e.target.value / 100;
+        });
+    }
+    
+    if (bgMusic) {
+        bgMusic.volume = 0.5;
+    }
+}
+
+function toggleMusic() {
+    const bgMusic = document.getElementById('bgMusic');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const musicToggle = document.getElementById('musicToggle');
+    
+    if (!bgMusic) return;
+    
+    if (isMusicPlaying) {
+        bgMusic.pause();
+        isMusicPlaying = false;
+        if (playPauseBtn) {
+            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+        }
+        if (musicToggle) {
+            musicToggle.innerHTML = '<i class="fas fa-music"></i>';
+        }
+    } else {
+        bgMusic.play().catch(e => {
+            console.log('音乐播放失败:', e);
+        });
+        isMusicPlaying = true;
+        if (playPauseBtn) {
+            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        }
+        if (musicToggle) {
+            musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+        }
+    }
+}
+
+// =============================================================================
+// 暗黑模式切换
+// =============================================================================
+
+function initDarkMode() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+    }
+    
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+    }
+}
+
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    localStorage.setItem('darkMode', isDarkMode);
+}
+
+// =============================================================================
+// 移动端菜单管理
+// =============================================================================
+
+function initMobileMenu() {
+    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+}
+
+// =============================================================================
+// 滚动效果
+// =============================================================================
+
+function initScrollEffects() {
+    window.addEventListener('scroll', () => {
+        const backToTopBtn = document.getElementById('backToTop');
+        if (backToTopBtn) {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+                backToTopBtn.classList.add('opacity-100');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+                backToTopBtn.classList.remove('opacity-100');
+            }
+        }
+    });
+}
+
+function initBackToTop() {
+    const backToTopBtn = document.getElementById('backToTop');
+    if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+}
+
+// =============================================================================
+// 技能条动画
+// =============================================================================
+
+function animateSkillBars() {
+    const skillBars = document.querySelectorAll('.skill-bar');
+    
+    skillBars.forEach((bar, index) => {
+        const width = bar.getAttribute('data-width');
+        
+        anime({
+            targets: bar,
+            width: width + '%',
+            delay: index * 200,
+            duration: 1500,
+            easing: 'easeOutQuart'
+        });
+    });
+}
+
+// =============================================================================
+// 联系表单处理
+// =============================================================================
+
+function initContactForm() {
+    const contactForm = document.querySelector('#contact form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', handleContactSubmit);
+    }
+}
+
+function handleContactSubmit(e) {
+    e.preventDefault();
+    
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>发送中...';
+    submitBtn.disabled = true;
+    
+    setTimeout(() => {
+        submitBtn.innerHTML = '<i class="fas fa-check mr-2"></i>发送成功';
+        submitBtn.classList.add('bg-green-500');
+        
+        setTimeout(() => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('bg-green-500');
+            e.target.reset();
+        }, 2000);
+    }, 1500);
+}
+
+// =============================================================================
+// 性能监控
+// =============================================================================
+
+function initPerformanceMonitoring() {
+    window.addEventListener('load', () => {
+        if ('performance' in window) {
+            const perfData = performance.getEntriesByType('navigation')[0];
+            console.log('页面加载时间:', perfData.loadEventEnd - perfData.loadEventStart, 'ms');
+        }
+    });
+    
+    window.addEventListener('error', (e) => {
+        if (e.target.tagName === 'IMG') {
+            console.warn('图片加载失败:', e.target.src);
+        }
+    }, true);
+}
+
+function preloadCriticalResources() {
+    const criticalImages = [
+        'https://images.unsplash.com/photo-1616486338812-3dadae4d32ace?w=400&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=400&h=400&fit=crop'
+    ];
+    
+    criticalImages.forEach(src => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = src;
+        document.head.appendChild(link);
+    });
+}
+
+// =============================================================================
+// 加载更多功能
+// =============================================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', loadMoreImages);
+    }
+});
+
+function loadMoreImages() {
+    const galleryGrid = document.getElementById('galleryGrid');
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    
+    if (!galleryGrid || !loadMoreBtn) return;
+    
+    loadMoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>加载中...';
+    loadMoreBtn.disabled = true;
+    
+    setTimeout(() => {
+        const newImages = [
+            {
+                category: 'life',
+                src: 'https://images.unsplash.com/photo-1599388133038-f1a26a57e4e7?w=400&h=400&fit=crop',
+                hdSrc: 'https://images.unsplash.com/photo-1599388133038-f1a26a57e4e7?w=1920&h=1080&fit=max&q=90',
+                downloadUrl: 'https://unsplash.com/photos/1599388133038-f1a26a57e4e7/download',
+                src: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=400&fit=crop',
+                hdSrc: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1920&h=1080&fit=max&q=90',
+                downloadUrl: 'https://unsplash.com/photos/1486312338219-ce68d2c6f44d/download',
+                title: '工作环境',
+                description: '高效工作的空间'
+            },
+            {
+                category: 'travel',
+                src: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&h=400&fit=crop',
+                hdSrc: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=1920&h=1080&fit=max&q=90',
+                downloadUrl: 'https://unsplash.com/photos/1540189549336-e6e99c3679fe/download',
+                title: '健康美食',
+                description: '营养均衡的餐点'
+            }
+        ];
+        
+        newImages.forEach((imageData, index) => {
+            const imageElement = createGalleryItem(imageData);
+            galleryGrid.appendChild(imageElement);
+            
+            anime({
+                targets: imageElement,
+                opacity: [0, 1],
+                translateY: [50, 0],
+                delay: index * 100,
+                duration: 500,
+                easing: 'easeOutQuart'
+            });
+        });
+        
+        setTimeout(() => {
+            initializeLazyImages();
+        }, 300);
+        
+        loadMoreBtn.innerHTML = '加载更多 <i class="fas fa-plus ml-2"></i>';
+        loadMoreBtn.disabled = false;
+        
+        if (Math.random() > 0.5) {
+            loadMoreBtn.style.display = 'none';
+        }
+    }, 1500);
+}
+
+function createGalleryItem(imageData) {
+    const div = document.createElement('div');
+    div.className = 'gallery-item';
+    div.setAttribute('data-category', imageData.category);
+    
+    div.innerHTML = `
+        <div class="glass-effect rounded-2xl overflow-hidden hover-lift cursor-pointer" onclick="openModal(this)">
+            <div class="aspect-square relative overflow-hidden">
+                <img data-src="${imageData.src}" 
+                     data-hd-src="${imageData.hdSrc}"
+                     data-download-url="${imageData.downloadUrl}"
+                     alt="${imageData.title}" 
+                     class="lazy-image w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                     loading="lazy">
+                <div class="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity">
+                    <i class="fas fa-expand text-sm"></i>
+                </div>
+            </div>
+            <div class="p-4">
+                <h3 class="font-bold text-lg mb-2">${imageData.title}</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">${imageData.description}</p>
+            </div>
+        </div>
+    `;
+    
+    return div;
+}
+
+// 全局错误处理
+window.addEventListener('error', (e) => {
+    console.error('JavaScript错误:', e.error);
+});
+
+window.addEventListener('unhandledrejection', (e) => {
+    console.error('未处理的Promise错误:', e.reason);
+});
+    </script>
+</body>
+</html>
